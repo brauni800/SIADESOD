@@ -31,8 +31,27 @@ class ServiceStaff {
         return new RepositoryStaff().createStaff(staff);
     }
 
+    /**
+     * Obtiene una lista de todos los empleados en la base de datos.
+     */
     getAllStaff() {
         return new RepositoryStaff().getAll();
+    }
+
+    /**
+     * Obtiene un empleado de la base de datos con base a su id.
+     * @param {String} idStaff ID del empleado.
+     */
+    getStaff(idStaff) {
+        return new RepositoryStaff().getStaff(parseInt(idStaff, 10));
+    }
+
+    /**
+     * Elimina un empleado de la base de datos, previamente convierte el ID del empleado en un Number.
+     * @param {String} idStaff ID del empleado.
+     */
+    deleteStaff(idStaff) {
+        return new RepositoryStaff().deleteStaff(parseInt(idStaff, 10));
     }
 }
 

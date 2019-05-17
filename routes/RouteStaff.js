@@ -30,4 +30,36 @@ router.get('/staff', (req, res) => {
     } 
 });
 
+router.get('/staff/:idStaff', (req, res) => {
+    try {
+        new ServiceStaff().getStaff(req.params.idStaff).then(results => {
+            if (results.length > 0) {
+                res.status(200).json(results[0]);
+            } else {
+                res.sendStatus(204);
+            }
+        }).catch(error => {
+            res.status(409).json({ error: error.sqlMessage });
+        })
+    } catch (error) {
+        res.status(409).json({ error });
+    }
+});
+
+router.delete('/staff/:idStaff', (req, res) => {
+    try {
+        new ServiceStaff().deleteStaff(req.params.idStaff).then(results => {
+            if (results.affectedRows > 0) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(204);
+            }
+        }).catch(error => {
+            res.status(409).json({ error });
+        });
+    } catch (error) {
+        res.status(409).json({ error });
+    }
+});
+
 module.exports = router;

@@ -1,5 +1,6 @@
 const connection = require('../database');
 const StaffModel = require('../models/Staff');
+const EnumUserType = require('../enums/EnumUserType');
 
 class RepositoryStaff {
     /**
@@ -69,6 +70,47 @@ class RepositoryStaff {
             + ' FROM USER u'
             + ' JOIN STAFF s ON u.ID_USER = s.ID_STAFF;';
             connection.query(sql, (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }
+
+    /**
+     * Obtiene un empleado de la base de datos con base a du id.
+     * @param {Number} idStaff ID del empleado.
+     */
+    getStaff(idStaff) {
+        return new Promise((resolve, reject) => {
+            const sql = ''
+            + ' SELECT'
+            + ' u.ID_USER AS id,'
+            + ' u.FIRST_NAME AS firstName,'
+            + ' u.LAST_NAME AS lastName,'
+            + ' u.EMAIL AS email,'
+            + ' u.DATE_OF_BIRTH AS dob,'
+            + ' u.PHONE AS phone,'
+            + ' u.ADDRESS AS address,'
+            + ' u.GENDER AS gender,'
+            + ' u.TYPE AS userType,'
+            + ' s.SALARY AS salary,'
+            + ' s.TYPE AS staffType'
+            + ' FROM USER u'
+            + ' JOIN STAFF s ON u.ID_USER = s.ID_STAFF'
+            + ' AND u.ID_USER = ?;';
+            const values = [idStaff];
+            connection.query(sql, values, (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }
+
+    deleteStaff(idStaff) {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM USER WHERE ID_USER = ? AND TYPE = ?;'
+            const values = [idStaff, EnumUserType.STAFF];
+            connection.query(sql, values, (error, results) => {
                 if (error) reject(error);
                 resolve(results);
             });

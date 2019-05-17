@@ -118,7 +118,7 @@ class RepositoryPatient {
      */
     deletePatient(idPatient) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM USER WHERE ID_USER = ?;'
+            const sql = 'DELETE FROM USER WHERE ID_USER = ?;';
             const values = [idPatient];
             connection.query(sql, values, (error, results) => {
                 if (error) reject(error);
