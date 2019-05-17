@@ -39,7 +39,11 @@ router.get('/patient', (req, res) => {
 router.get('/patient/:idPatient', (req, res) => {
     try {
         new ServicePatient().getPatient(req.params.idPatient).then(results => {
-            res.status(200).json(results);
+            if (results.length > 0) {
+                res.status(200).json(results);
+            } else {
+                res.sendStatus(404);
+            }
         }).catch(error => {
             res.status(409).json({ error: error.sqlMessage });
         })
