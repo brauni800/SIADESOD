@@ -42,7 +42,7 @@ router.get('/patient/:idPatient', (req, res) => {
             if (results.length > 0) {
                 res.status(200).json(results[0]);
             } else {
-                res.sendStatus(404);
+                res.sendStatus(204);
             }
         }).catch(error => {
             res.status(409).json({ error: error.sqlMessage });
