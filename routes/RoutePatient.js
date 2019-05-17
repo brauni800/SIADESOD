@@ -33,6 +33,9 @@ router.get('/patient', (req, res) => {
     }
 });
 
+/**
+ * Obtiene a un paciente en la base datos con base a su ID.
+ */
 router.get('/patient/:idPatient', (req, res) => {
     try {
         new ServicePatient().getPatient(req.params.idPatient).then(results => {
@@ -45,12 +48,31 @@ router.get('/patient/:idPatient', (req, res) => {
     }
 });
 
+/**
+ * Elimina a un paciente de la base de datos con base a su ID.
+ */
 router.delete('/patient/:idPatient', (req, res) => {
     try {
         new ServicePatient().deletePatient(req.params.idPatient).then(() => {
             res.sendStatus(200);
         }).catch(error => {
             res.status(409).json({ error });
+        });
+    } catch (error) {
+        res.status(409).json({ error });
+    }
+});
+
+/**
+ * Actualiza un paciente en la base de datos con base a su ID.
+ * Se pasan únicamente los datos del paciente que se desean actualizar.
+ */
+router.put('/patient/:idPatient',  (req, res) => {
+    try {
+        new ServicePatient().editPatient(req.params.idPatient, req.body).then(() => {
+            res.sendStatus(200);
+        }).catch(error => {
+            res.json({ error });
         });
     } catch (error) {
         res.status(409).json({ error });

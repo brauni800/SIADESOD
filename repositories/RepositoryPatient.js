@@ -2,7 +2,14 @@ const connection = require('../database');
 const PatientModel = require('../models/Patient');
 
 class RepositoryPatient {
-    createPatient(/**@type {PatientModel} */patient) {
+
+    /**
+     * Crea un paciente en la base de datos por medio de una transacción.
+     * Si ocurre un fallo mientras se está creando el paciente se realizará
+     * un rollback y no se insertarán datos en las tablas.
+     * @param {PatientModel} patient Datos del paciente.
+     */
+    createPatient(patient) {
         return new Promise((resolve, reject) => {
             connection.beginTransaction(error => {
                 if (error) reject(error);
@@ -46,6 +53,9 @@ class RepositoryPatient {
         });
     }
 
+    /**
+     * Obtiene una lista de todos los pacientes en la base de datos.
+     */
     getAll() {
         return new Promise((resolve, reject) => {
             const sql = ''
@@ -71,7 +81,11 @@ class RepositoryPatient {
         });
     }
 
-    getPatient(/**@type {Number} */idPatient) {
+    /**
+     * Obtiene un paciente de la base de datos con base a su id.
+     * @param {Number} idPatient ID del paciente.
+     */
+    getPatient(idPatient) {
         return new Promise((resolve, reject) => {
             const sql = ''
             + ' SELECT'
@@ -98,13 +112,59 @@ class RepositoryPatient {
         });
     }
 
-    deletePatient(/**@type {Number} */idPatient) {
+    /**
+     * Elimina un paciente de la base de datos.
+     * @param {Number} idPatient ID del paciente.
+     */
+    deletePatient(idPatient) {
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM USER WHERE ID_USER = ?;'
             const values = [idPatient];
             connection.query(sql, values, (error, results) => {
                 if (error) reject(error);
                 resolve(results);
+            });
+        });
+    }
+
+    /**
+     * Actualiza una entidad de la base de datos. Se deberá pasar como parámetro el query que será compilado.
+     * @param {String} query Query que será compilado en la base de datos.
+     * @param {String[]} values Arreglo de valores que serán actualizados en la base de datos.
+     */
+    editOneEntity(query, values) {
+        return new Promise((resolve, reject) => {
+            connection.query(query, values, (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }
+
+    /**
+     * Actualiza dos entidades de la base de datos por medio de una transacción,
+     * si ocurre un fallo mientras se ejecutan los scripts, se realizará un rollback
+     * y no se guardarán datos en las tablas. Los querys y datos que se desean utilizar
+     * se deberán pasar como parámetro.
+     * @param {String} queryUser Query de la primera tabla que se desea editar.
+     * @param {*} valuesUser Datos de la primera tabla que se desea editar.
+     * @param {*} queryPatient Query de la segunda tabla que se desea editar.
+     * @param {*} valuesPatient Datos de la segunda tabla que se desea editar.
+     */
+    editBothEntities(queryUser, valuesUser, queryPatient, valuesPatient) {
+        return new Promise((resolve, reject) => {
+            connection.beginTransaction(error => {
+                if (error) reject(error);
+                connection.query(queryUser, valuesUser, error => {
+                    if (error) return connection.rollback(() => reject(error));
+                    connection.query(queryPatient, valuesPatient, (error, results) => {
+                        if (error) return connection.rollback(() => reject(error));
+                        connection.commit(error => {
+                            if (error) return connection.rollback(() => reject(error));
+                            resolve(results);
+                        });
+                    });
+                });
             });
         });
     }
