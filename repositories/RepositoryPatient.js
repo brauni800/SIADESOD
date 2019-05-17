@@ -73,7 +73,7 @@ class RepositoryPatient {
             + ' p.INSURANCES AS insurances,'
             + ' p.ALLERGIES AS allergies'
             + ' FROM USER u'
-            + ' LEFT JOIN PATIENT p ON u.ID_USER = p.ID_PATIENT;';
+            + ' JOIN PATIENT p ON u.ID_USER = p.ID_PATIENT;';
             connection.query(sql, (error, results) => {
                 if (error) reject(error);
                 resolve(results);
