@@ -57,8 +57,12 @@ router.get('/patient/:idPatient', (req, res) => {
  */
 router.delete('/patient/:idPatient', (req, res) => {
     try {
-        new ServicePatient().deletePatient(req.params.idPatient).then(() => {
-            res.sendStatus(200);
+        new ServicePatient().deletePatient(req.params.idPatient).then(results => {
+            if (results.affectedRows > 0) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(204);
+            }
         }).catch(error => {
             res.status(409).json({ error });
         });

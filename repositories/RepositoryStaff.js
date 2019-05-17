@@ -108,7 +108,7 @@ class RepositoryStaff {
 
     deleteStaff(idStaff) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM USER WHERE ID_USER = ? AND TYPE = ?;'
+            const sql = 'DELETE FROM USER WHERE ID_USER = ? AND TYPE = ?;';
             const values = [idStaff, EnumUserType.STAFF];
             connection.query(sql, values, (error, results) => {
                 if (error) reject(error);

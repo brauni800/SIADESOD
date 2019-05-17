@@ -1,5 +1,6 @@
 const connection = require('../database');
 const PatientModel = require('../models/Patient');
+const EnumUserType = require('../enums/EnumUserType');
 
 class RepositoryPatient {
 
@@ -118,8 +119,8 @@ class RepositoryPatient {
      */
     deletePatient(idPatient) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM USER WHERE ID_USER = ?;';
-            const values = [idPatient];
+            const sql = 'DELETE FROM USER WHERE ID_USER = ? AND TYPE = ?;';
+            const values = [idPatient, EnumUserType.PATIENT];
             connection.query(sql, values, (error, results) => {
                 if (error) reject(error);
                 resolve(results);
