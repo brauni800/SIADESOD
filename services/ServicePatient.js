@@ -27,6 +27,18 @@ class ServicePatient {
         patient.allergies = allergies;
         return new RepositoryPatient().createPatient(patient);
     }
+
+    getAllPatients() {
+        return new RepositoryPatient().getAll();
+    }
+
+    getPatient(/**@type {String} */idPatient) {
+        return new RepositoryPatient().getPatient(parseInt(idPatient, 10));
+    }
+
+    deletePatient(/**@type {String} */idPatient) {
+        return new RepositoryPatient().deletePatient(parseInt(idPatient, 10));
+    }
 }
 
 module.exports = ServicePatient;
