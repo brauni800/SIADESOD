@@ -55,7 +55,7 @@ router.delete('/staff/:idStaff', (req, res) => {
                 res.sendStatus(204);
             }
         }).catch(error => {
-            res.status(409).json({ error });
+            res.status(409).json({ error: error.sqlMessage });
         });
     } catch (error) {
         res.status(409).json({ error });
