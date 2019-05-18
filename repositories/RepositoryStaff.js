@@ -106,6 +106,10 @@ class RepositoryStaff {
         });
     }
 
+    /**
+     * Elimina un empleado de la base de datos con base a su id.
+     * @param {Number} idStaff ID del empleado.
+     */
     deleteStaff(idStaff) {
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM USER WHERE ID_USER = ? AND TYPE = ?;';
