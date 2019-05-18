@@ -115,7 +115,7 @@ class RepositoryPatient {
     }
 
     /**
-     * Actualiza una entidad de la base de datos. Se deberá pasar como parámetro el query que será compilado.
+     * Actualiza un paciente en la base de datos.
      * @param {Number} idPatient ID del paciente que se desea actualizar.
      * @param {Object} patient Objeto con los datos del paciente que serán actualizados.
      * @param {String} [patient.password] Contraseña del paciente.
