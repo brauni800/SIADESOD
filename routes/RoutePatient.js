@@ -64,7 +64,7 @@ router.delete('/patient/:idPatient', (req, res) => {
                 res.sendStatus(204);
             }
         }).catch(error => {
-            res.status(409).json({ error });
+            res.status(409).json({ error: error.sqlMessage });
         });
     } catch (error) {
         res.status(409).json({ error });
@@ -77,13 +77,22 @@ router.delete('/patient/:idPatient', (req, res) => {
  */
 router.put('/patient/:idPatient',  (req, res) => {
     try {
-        new ServicePatient().editPatient(req.params.idPatient, req.body).then(() => {
-            res.sendStatus(200);
-        }).catch(error => {
-            res.json({ error });
-        });
+        new ServicePatient().editPatient(req.params.idPatient, req.body)
+        .then(results => {
+            if (Array.isArray(results)) {
+                if (results[0].affectedRows > 0 && results[1].affectedRows > 0) {
+                    if (results[0].changedRows > 0 || results[1].changedRows > 0) res.sendStatus(200);
+                    else res.sendStatus(204);
+                }
+                else res.sendStatus(204);
+            } else {
+                if (results.affectedRows > 0 && results.changedRows > 0) res.sendStatus(200);
+                else res.sendStatus(204);
+            }
+        })
+        .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
-        res.status(409).json({ error });
+        res.status(409).send(error);
     }
 });
 

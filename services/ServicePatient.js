@@ -58,78 +58,18 @@ class ServicePatient {
     /**
      * Edita un paciente de la base de datos.
      * @param {String} idPatient ID del paciente que se desea editar.
-     * @param {Object} data Datos del paciente que se desea editar. Si algún dato es undefined
-     * no se incluirá en el query. Determina de manera dinámica la tabla que se editará.
+     * @param {Object} patient Datos del paciente que se desea editar.
      */
-    editPatient(idPatient, { password, firstName, lastName, email, dob, phone, address, gender, curp, insurances, allergies }) {
-        let queryUserFields = '', queryPatientFields = '';
-        let userValues = [], patientValues = [];
-        if (password !== undefined) {
-            queryUserFields += 'PASSWORD = ?,';
-            userValues.push(password);
-        }
-        if (firstName !== undefined) {
-            queryUserFields += 'FIRST_NAME = ?,';
-            userValues.push(firstName);
-        }
-        if (lastName !== undefined) {
-            queryUserFields += 'LAST_NAME = ?,';
-            userValues.push(lastName);
-        }
-        if (email !== undefined) {
-            queryUserFields += 'EMAIL = ?,';
-            userValues.push(email);
-        }
-        if (dob !== undefined) {
-            queryUserFields += 'DATE_OF_BIRTH = ?,';
-            userValues.push(dob);
-        }
-        if (phone !== undefined) {
-            queryUserFields += 'PHONE = ?,';
-            userValues.push(phone);
-        }
-        if (address !== undefined) {
-            queryUserFields += 'ADDRESS = ?,';
-            userValues.push(address);
-        }
-        if (gender !== undefined) {
-            queryUserFields += 'GENDER = ?,';
-            userValues.push(gender);
-        }
-        if (curp !== undefined) {
-            queryPatientFields += 'CURP = ?,';
-            patientValues.push(curp);
-        }
-        if (insurances !== undefined) {
-            queryPatientFields += 'INSURANCES = ?,';
-            patientValues.push(insurances);
-        }
-        if (allergies !== undefined) {
-            queryPatientFields += 'ALLERGIES = ?,';
-            patientValues.push(allergies);
-        }
-
-        if (userValues.length > 0) {
-            if (patientValues.length > 0) {
-                let queryUser = `UPDATE USER SET ${queryUserFields.slice(0, queryUserFields.length - 1)} WHERE ID_USER = ?;`;
-                let queryPatient = `UPDATE PATIENT SET ${queryPatientFields.slice(0, queryPatientFields.length - 1)} WHERE ID_PATIENT = ?;`;
-                userValues.push(parseInt(idPatient, 10));
-                patientValues.push(parseInt(idPatient, 10));
-                return new RepositoryPatient().editBothEntities(queryUser, userValues, queryPatient, patientValues);
-            } else {
-                let queryUser = `UPDATE USER SET ${queryUserFields.slice(0, queryUserFields.length - 1)} WHERE ID_USER = ?;`;
-                userValues.push(parseInt(idPatient, 10));
-                return new RepositoryPatient().editOneEntity(queryUser, userValues);
-            }
-        } else {
-            if (patientValues.length > 0) {
-                let queryPatient = `UPDATE PATIENT SET ${queryPatientFields.slice(0, queryPatientFields.length - 1)} WHERE ID_PATIENT = ?;`;
-                patientValues.push(parseInt(idPatient, 10));
-                return new RepositoryPatient().editOneEntity(queryPatient, patientValues);
-            } else {
-                throw 'Nothing to update';
+    editPatient(idPatient, patient) {
+        if (patient.gender !== undefined) {
+            if (patient.gender !== EnumGender.MALE && patient.gender !== EnumGender.FEMALE) {
+                throw 'Invalid Gender';
             }
         }
+        if (patient.dob !== undefined) {
+            patient.dob = new Date(patient.dob);
+        }
+        return new RepositoryPatient().editPatient(parseInt(idPatient, 10), patient);
     }
 }
 
