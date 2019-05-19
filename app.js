@@ -8,6 +8,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //routes
+app.use(require('./routes/RouteDentist'));
 app.use(require('./routes/RouteStaff'));
 app.use(require('./routes/RoutePatient'));
 

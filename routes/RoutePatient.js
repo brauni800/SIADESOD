@@ -92,7 +92,7 @@ router.put('/patient/:idPatient',  (req, res) => {
         })
         .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
-        res.status(409).send(error);
+        res.status(409).json({ error });
     }
 });
 
