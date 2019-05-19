@@ -12,6 +12,6 @@ app.use(require('./routes/RouteDentist'));
 app.use(require('./routes/RouteStaff'));
 app.use(require('./routes/RoutePatient'));
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('Listen on port 3000');
 });
