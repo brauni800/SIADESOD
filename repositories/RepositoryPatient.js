@@ -1,4 +1,3 @@
-const connection = require('../database');
 const BasicCRUD = require('./BasicCRUD');
 const PatientModel = require('../models/Patient');
 const EnumUserType = require('../enums/EnumUserType');
