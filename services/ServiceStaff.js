@@ -1,6 +1,7 @@
 const RepositoryStaff = require('../repositories/RepositoryStaff');
 const EnumUserType = require('../enums/EnumUserType');
 const EnumStaffType = require('../enums/EnumStaffType');
+const EnumGender = require('../enums/EnumGender');
 const UserModel = require('../models/User');
 const StaffModel = require('../models/Staff');
 
@@ -52,6 +53,28 @@ class ServiceStaff {
      */
     deleteStaff(idStaff) {
         return new RepositoryStaff().deleteStaff(parseInt(idStaff, 10));
+    }
+
+    /**
+     * Edita un staff de la base de datos.
+     * @param {String} idStaff ID del staff que se desea editar.
+     * @param {Object} staff Datos del staff que se desea editar.
+     */
+    editStaff(idStaff, staff) {
+        if (staff.gender !== undefined) {
+            if (staff.gender !== EnumGender.MALE && staff.gender !== EnumGender.FEMALE) {
+                throw 'Invalid Gender';
+            }
+        }
+        if (staff.dob !== undefined) {
+            staff.dob = new Date(staff.dob);
+        }
+        if (staff.staffType !== undefined) {
+            if (staff.staffType !== EnumStaffType.ADMINISTRATIVE && staff.staffType !== EnumStaffType.INTENDANCE) {
+                throw 'Invalid Staff Type'
+            }
+        }
+        return new RepositoryStaff().editStaff(idStaff, staff);
     }
 }
 

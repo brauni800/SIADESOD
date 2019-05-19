@@ -1,6 +1,8 @@
 const BasicCRUD = require('./BasicCRUD');
 const StaffModel = require('../models/Staff');
 const EnumUserType = require('../enums/EnumUserType');
+const EnumGender = require('../enums/EnumGender');
+const EnumStaffType = require('../enums/EnumStaffType');
 
 class RepositoryStaff {
     /**
@@ -103,6 +105,73 @@ class RepositoryStaff {
             'TYPE': EnumUserType.STAFF,
         }
         return new BasicCRUD().delete(table, options);
+    }
+
+    /**
+     * Actualiza un staff en la base de datos.
+     * @param {Number} idStaff ID del staff que se desea actualizar.
+     * @param {Object} staff Objeto con los datos del staff que serán actualizados.
+     * @param {String} [staff.password] Contraseña del staff.
+     * @param {String} [staff.firstName] Nombre del staff.
+     * @param {String} [staff.lastName] Apellido del staff.
+     * @param {String} [staff.email] Email del staff.
+     * @param {Date} [staff.dob] Fecha de cumpleaños del staff.
+     * @param {String} [staff.phone] Número de teléfono de contacto del staff.
+     * @param {String} [staff.address] Dirección de la vivienda del staff.
+     * @param {EnumGender} [staff.gender] Género del staff.
+     * @param {String} [staff.salary] Salario mensual del staff.
+     * @param {EnumStaffType} [staff.staffType] Tipo de staff que se maneja en la clínica.
+     */
+    editStaff(idStaff, staff) {
+        let dataUser = {}, dataStaff = {};
+        if (staff.password !== undefined) dataUser['PASSWORD'] = staff.password;
+        if (staff.firstName !== undefined) dataUser['FIRST_NAME'] = staff.firstName;
+        if (staff.lastName !== undefined) dataUser['LAST_NAME'] = staff.lastName;
+        if (staff.email !== undefined) dataUser['EMAIL'] = staff.email;
+        if (staff.dob !== undefined) dataUser['DATE_OF_BIRTH'] = staff.dob;
+        if (staff.phone !== undefined) dataUser['PHONE'] = staff.phone;
+        if (staff.address !== undefined) dataUser['ADDRESS'] = staff.address;
+        if (staff.gender !== undefined) dataUser['GENDER'] = staff.gender;
+        if (staff.salary !== undefined) dataStaff['SALARY'] = staff.salary;
+        if (staff.staffType !== undefined) dataStaff['TYPE'] = staff.staffType;
+
+        if (Object.keys(dataUser).length > 0) {
+            if (Object.keys(dataStaff).length > 0) {
+                let user = {
+                    table: 'USER',
+                    data: dataUser,
+                    where: {
+                        query: 'ID_USER = ?',
+                        values: [idStaff],
+                    },
+                }
+                let staff = {
+                    table: 'STAFF',
+                    data: dataStaff,
+                    where: {
+                        query: 'ID_STAFF = ?',
+                        values: [idStaff],
+                    },
+                }
+                return new BasicCRUD().updateMany(user, staff);
+            } else {
+                let where = {
+                    query: 'ID_USER = ?',
+                    values: [idStaff],
+                }
+                return new BasicCRUD().updateOne('USER', dataUser, where);
+            }
+        } else {
+            if (Object.keys(dataStaff).length > 0) {
+                let where = {
+                    query: 'ID_STAFF = ?',
+                    values: [idStaff],
+                }
+                return new BasicCRUD().updateOne('STAFF', dataStaff, where);
+            } else {
+                throw 'Nothing to update';
+            }
+        }
     }
 }
 
