@@ -7,28 +7,39 @@ const PatientModel = require('../models/Patient');
 class ServicePatient {
     /**
      * Registra un paciente en la base de datos.
-     * @param {Object} data Datos del paciente.
+     * @param {Object} dataUser Datos del paciente.
+     * @param {String} dataUser.password Contraseña del paciente.
+     * @param {String} dataUser.firstName Nombre del paciente.
+     * @param {String} dataUser.lastName Apellido del paciente.
+     * @param {String} dataUser.email Email del paciente.
+     * @param {String} dataUser.dob Fecha de cumpleaños del paciente.
+     * @param {String} dataUser.phone Número telefónico del paciente.
+     * @param {String} dataUser.address Dirección de la vivienda del paciente.
+     * @param {String} dataUser.gender Género del paciente.
+     * @param {String} dataUser.curp CURP del paciente.
+     * @param {String} dataUser.insurances Número de seguro del paciente.
+     * @param {String} dataUser.allergies Alergias del paciente.
      */
-    ceratePatient({ password, firstName, lastName, email, dob, phone, address, gender, curp, insurances, allergies }) {
-        if (gender !== EnumGender.MALE && gender !== EnumGender.FEMALE) {
+    ceratePatient(dataUser) {
+        if (dataUser.gender !== EnumGender.MALE && dataUser.gender !== EnumGender.FEMALE) {
             throw 'Invalid Gender';
         }
         const user = new UserModel();
-        user.password = password;
-        user.firstName = firstName;
-        user.lastName = lastName;
-        user.email = email;
-        user.dob = new Date(dob);
-        user.phone = phone;
-        user.address = address;
-        user.gender = gender;
+        user.password = dataUser.password;
+        user.firstName = dataUser.firstName;
+        user.lastName = dataUser.lastName;
+        user.email = dataUser.email;
+        user.dob = new Date(dataUser.dob);
+        user.phone = dataUser.phone;
+        user.address = dataUser.address;
+        user.gender = dataUser.gender;
         user.userType = EnumUserType.PATIENT;
         user.admin = false;
         const patient = new PatientModel();
         patient.user = user;
-        patient.curp = curp;
-        patient.insurances = insurances;
-        patient.allergies = allergies;
+        patient.curp = dataUser.curp;
+        patient.insurances = dataUser.insurances;
+        patient.allergies = dataUser.allergies;
         return new RepositoryPatient().createPatient(patient);
     }
 

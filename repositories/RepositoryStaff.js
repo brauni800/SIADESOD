@@ -119,7 +119,7 @@ class RepositoryStaff {
      * @param {String} [staff.phone] Número de teléfono de contacto del staff.
      * @param {String} [staff.address] Dirección de la vivienda del staff.
      * @param {EnumGender} [staff.gender] Género del staff.
-     * @param {String} [staff.salary] Salario mensual del staff.
+     * @param {Number} [staff.salary] Salario mensual del staff.
      * @param {EnumStaffType} [staff.staffType] Tipo de staff que se maneja en la clínica.
      */
     editStaff(idStaff, staff) {
