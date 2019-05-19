@@ -8,6 +8,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+    res.send('SIADESOD app');
+});
+
 //routes
 app.use(require('./routes/RouteDentist'));
 app.use(require('./routes/RouteStaff'));
