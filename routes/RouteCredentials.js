@@ -20,7 +20,7 @@ router.post('/login', (req, res) => {
                         console.log(err);
                         res.sendStatus(409);
                     }
-                    else res.status(200).json({ token });
+                    else res.status(202).json({ token });
                 });
             }
             else res.sendStatus(204);
