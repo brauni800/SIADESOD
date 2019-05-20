@@ -17,6 +17,7 @@ app.use(require('./routes/RouteCredentials'));
 app.use(require('./routes/RouteDentist'));
 app.use(require('./routes/RouteStaff'));
 app.use(require('./routes/RoutePatient'));
+app.use(require('./routes/RouteAppointment'));
 
 app.listen(PORT, () => {
     console.log(`Listen on ${PORT}`);

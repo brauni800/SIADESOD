@@ -22,6 +22,27 @@ const GenerateDeleteQuery = data => {
 
 class BasicCRUD {
     /**
+     * Inserta datos en una tabla de la base de datos.
+     * @param {String} table Nombre de la tabla.
+     * @param {String[]} columns Lista con el nombre de las columnas de la tabla.
+     * @param {any[]} values Lista con los datos de las columnas. Deben estar en el mismo orden que su columna.
+     * @example
+     *  var table = 'table';
+     *  var columns = ['column1', 'column2', 'column3', ...];
+     *  var values = ['foo', 0, 'foo2', ...];
+     *  new BasicCRUD().createOne(table, columns, values);
+     */
+    createOne(table, columns, values) {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO ${table} (${columns.map(column => column)}) VALUES (${values.map(() => ('?'))});`;
+            connection.query(query, values, (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }
+
+    /**
      * Inserta datos en 2 tablas por medio de una transacción. Si ocurre un fallo
      * en el proceso, ocurrirá un rollback y no se insertarán elementos.
      * @param {Object} data1 Datos de la tabla 1.
