@@ -19,7 +19,7 @@ router.get('/appointment', (req, res) => {
         .then(results => {
             if (results.length > 0) {
                 if (results.length > 1) res.status(200).json(results);
-                else res.status(200).json(results[0]);
+                else res.status(200).json(results);
             }
             else res.sendStatus(204);
         })
