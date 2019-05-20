@@ -8,7 +8,7 @@ const router = express.Router();
  */
 router.post('/patient', (req, res) => {
     try {
-        new ServicePatient().ceratePatient(req.body)
+        new ServicePatient(req.headers.authorization).ceratePatient(req.body)
         .then(() => res.sendStatus(201))
         .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
@@ -21,7 +21,7 @@ router.post('/patient', (req, res) => {
  */
 router.get('/patient', (req, res) => {
     try {
-        new ServicePatient().getAllPatients()
+        new ServicePatient(req.headers.authorization).getAllPatients()
         .then(results => res.status(200).json(results))
         .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
@@ -34,7 +34,7 @@ router.get('/patient', (req, res) => {
  */
 router.get('/patient/:idPatient', (req, res) => {
     try {
-        new ServicePatient().getPatient(req.params.idPatient)
+        new ServicePatient(req.headers.authorization).getPatient(req.params.idPatient)
         .then(results => {
             if (results.length > 0) res.status(200).json(results[0]);
             else res.sendStatus(204);
@@ -50,7 +50,7 @@ router.get('/patient/:idPatient', (req, res) => {
  */
 router.delete('/patient/:idPatient', (req, res) => {
     try {
-        new ServicePatient().deletePatient(req.params.idPatient)
+        new ServicePatient(req.headers.authorization).deletePatient(req.params.idPatient)
         .then(results => {
             if (results.affectedRows > 0) res.sendStatus(200);
             else res.sendStatus(204);
@@ -67,7 +67,7 @@ router.delete('/patient/:idPatient', (req, res) => {
  */
 router.put('/patient/:idPatient',  (req, res) => {
     try {
-        new ServicePatient().editPatient(req.params.idPatient, req.body)
+        new ServicePatient(req.headers.authorization).editPatient(req.params.idPatient, req.body)
         .then(results => {
             if (Array.isArray(results)) {
                 if (results[0].affectedRows > 0 && results[1].affectedRows > 0) {

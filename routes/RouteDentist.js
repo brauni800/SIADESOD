@@ -8,7 +8,7 @@ const router = express.Router();
  */
 router.post('/dentist', (req, res) => {
     try {
-        new ServiceDentist().createDentist(req.body)
+        new ServiceDentist(req.headers.authorization).createDentist(req.body)
         .then(() => res.sendStatus(201))
         .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
@@ -21,7 +21,7 @@ router.post('/dentist', (req, res) => {
  */
 router.get('/dentist', (req, res) => {
     try {
-        new ServiceDentist().getAllDentists()
+        new ServiceDentist(req.headers.authorization).getAllDentists()
         .then(results => res.status(200).json(results))
         .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
@@ -34,7 +34,7 @@ router.get('/dentist', (req, res) => {
  */
 router.get('/dentist/:idDentist', (req, res) => {
     try {
-        new ServiceDentist().getDentist(req.params.idDentist)
+        new ServiceDentist(req.headers.authorization).getDentist(req.params.idDentist)
         .then(results => {
             if (results.length > 0) res.status(200).json(results[0]);
             else res.sendStatus(204);
@@ -50,7 +50,7 @@ router.get('/dentist/:idDentist', (req, res) => {
  */
 router.delete('/dentist/:idDentist', (req, res) => {
     try {
-        new ServiceDentist().deleteDentist(req.params.idDentist)
+        new ServiceDentist(req.headers.authorization).deleteDentist(req.params.idDentist)
         .then(results => {
             if (results.affectedRows > 0) res.sendStatus(200);
             else res.sendStatus(204);
@@ -66,7 +66,7 @@ router.delete('/dentist/:idDentist', (req, res) => {
  */
 router.put('/dentist/:idDentist', (req, res) => {
     try {
-        new ServiceDentist().editDentist(req.params.idDentist, req.body)
+        new ServiceDentist(req.headers.authorization).editDentist(req.params.idDentist, req.body)
         .then(results => {
             if (Array.isArray(results)) {
                 if (results[0].affectedRows > 0 && results[1].affectedRows > 0) {

@@ -1,10 +1,24 @@
+const jwt = require('jsonwebtoken');
 const RepositoryDentist = require('../repositories/RepositoryDentist');
 const EnumUserType = require('../enums/EnumUserType');
 const EnumGender = require('../enums/EnumGender');
 const UserModel = require('../models/User');
 const DentistModel = require('../models/Dentist');
+const secret = require('../config').secretKey;
+
+const verifyJWT = token => {
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) throw err;
+    });
+}
 
 class ServiceDentist {
+    /**
+     * @param {String} token Token JWT.
+     */
+    constructor (token) {
+        this.token = token;
+    }
     /**
      * Registra un dentista en la base de datos.
      * @param {Object} dataUser Datos del usuario.
@@ -21,6 +35,7 @@ class ServiceDentist {
      * @param {String} dataUser.speciality Especialidad del dentista.
      */
     createDentist(dataUser) {
+        verifyJWT(this.token);
         const user = new UserModel();
         user.password = dataUser.password;
         user.firstName = dataUser.firstName;
@@ -44,6 +59,7 @@ class ServiceDentist {
      * Obtiene una lista de todos los dentistas en la base de datos.
      */
     getAllDentists() {
+        verifyJWT(this.token);
         return new RepositoryDentist().getAll();
     }
 
@@ -52,6 +68,7 @@ class ServiceDentist {
      * @param {String} idDentist ID del dentista.
      */
     getDentist(idDentist) {
+        verifyJWT(this.token);
         return new RepositoryDentist().getDentist(parseInt(idDentist, 10));
     }
 
@@ -60,6 +77,7 @@ class ServiceDentist {
      * @param {String} idDentist ID del dentista.
      */
     deleteDentist(idDentist) {
+        verifyJWT(this.token);
         return new RepositoryDentist().deleteDentist(parseInt(idDentist, 10));
     }
 
@@ -69,6 +87,7 @@ class ServiceDentist {
      * @param {Object} dentist Datos del dentista que se desea editar.
      */
     editDentist(idDentist, dentist) {
+        verifyJWT(this.token);
         if (dentist.gender !== undefined) {
             if (dentist.gender !== EnumGender.MALE && dentist.gender !== EnumGender.FEMALE) {
                 throw 'Invalid Gender';

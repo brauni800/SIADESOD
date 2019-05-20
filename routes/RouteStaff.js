@@ -8,7 +8,7 @@ const router = express.Router();
  */
 router.post('/staff', (req, res) => {
     try {
-        new ServiceStaff().createStaff(req.body)
+        new ServiceStaff(req.headers.authorization).createStaff(req.body)
         .then(() => res.sendStatus(201))
         .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
@@ -21,7 +21,7 @@ router.post('/staff', (req, res) => {
  */
 router.get('/staff', (req, res) => {
     try {
-        new ServiceStaff().getAllStaff()
+        new ServiceStaff(req.headers.authorization).getAllStaff()
         .then(results => res.status(200).json(results))
         .catch(error => res.status(409).json({ error: error.sqlMessage }));
     } catch (error) {
@@ -34,7 +34,7 @@ router.get('/staff', (req, res) => {
  */
 router.get('/staff/:idStaff', (req, res) => {
     try {
-        new ServiceStaff().getStaff(req.params.idStaff)
+        new ServiceStaff(req.headers.authorization).getStaff(req.params.idStaff)
         .then(results => {
             if (results.length > 0) res.status(200).json(results[0]);
             else res.sendStatus(204);
@@ -50,7 +50,7 @@ router.get('/staff/:idStaff', (req, res) => {
  */
 router.delete('/staff/:idStaff', (req, res) => {
     try {
-        new ServiceStaff().deleteStaff(req.params.idStaff)
+        new ServiceStaff(req.headers.authorization).deleteStaff(req.params.idStaff)
         .then(results => {
             if (results.affectedRows > 0) res.sendStatus(200);
             else res.sendStatus(204);
@@ -67,7 +67,7 @@ router.delete('/staff/:idStaff', (req, res) => {
  */
 router.put('/staff/:idStaff', (req, res) => {
     try {
-        new ServiceStaff().editStaff(req.params.idStaff, req.body)
+        new ServiceStaff(req.headers.authorization).editStaff(req.params.idStaff, req.body)
         .then(results => {
             if (Array.isArray(results)) {
                 if (results[0].affectedRows > 0 && results[1].affectedRows > 0) {

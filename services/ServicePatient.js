@@ -1,10 +1,24 @@
+const jwt = require('jsonwebtoken');
 const RepositoryPatient = require('../repositories/RepositoryPatient');
 const EnumGender = require('../enums/EnumGender');
 const EnumUserType = require('../enums/EnumUserType');
 const UserModel = require('../models/User');
 const PatientModel = require('../models/Patient');
+const secret = require('../config').secretKey;
+
+const verifyJWT = token => {
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) throw err;
+    });
+}
 
 class ServicePatient {
+    /**
+     * @param {String} token Token JWT.
+     */
+    constructor (token) {
+        this.token = token;
+    }
     /**
      * Registra un paciente en la base de datos.
      * @param {Object} dataUser Datos del paciente.
@@ -21,6 +35,7 @@ class ServicePatient {
      * @param {String} dataUser.allergies Alergias del paciente.
      */
     ceratePatient(dataUser) {
+        verifyJWT(this.token);
         if (dataUser.gender !== EnumGender.MALE && dataUser.gender !== EnumGender.FEMALE) {
             throw 'Invalid Gender';
         }
@@ -47,6 +62,7 @@ class ServicePatient {
      * Obtiene una lista de todos los pacientes en la base de datos.
      */
     getAllPatients() {
+        verifyJWT(this.token);
         return new RepositoryPatient().getAll();
     }
 
@@ -55,6 +71,7 @@ class ServicePatient {
      * @param {String} idPatient ID del paciente.
      */
     getPatient(idPatient) {
+        verifyJWT(this.token);
         return new RepositoryPatient().getPatient(parseInt(idPatient, 10));
     }
 
@@ -63,6 +80,7 @@ class ServicePatient {
      * @param {String} idPatient ID del paciente.
      */
     deletePatient(idPatient) {
+        verifyJWT(this.token);
         return new RepositoryPatient().deletePatient(parseInt(idPatient, 10));
     }
 
@@ -72,6 +90,7 @@ class ServicePatient {
      * @param {Object} patient Datos del paciente que se desea editar.
      */
     editPatient(idPatient, patient) {
+        verifyJWT(this.token);
         if (patient.gender !== undefined) {
             if (patient.gender !== EnumGender.MALE && patient.gender !== EnumGender.FEMALE) {
                 throw 'Invalid Gender';

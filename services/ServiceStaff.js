@@ -1,11 +1,25 @@
+const jwt = require('jsonwebtoken');
 const RepositoryStaff = require('../repositories/RepositoryStaff');
 const EnumUserType = require('../enums/EnumUserType');
 const EnumStaffType = require('../enums/EnumStaffType');
 const EnumGender = require('../enums/EnumGender');
 const UserModel = require('../models/User');
 const StaffModel = require('../models/Staff');
+const secret = require('../config').secretKey;
+
+const verifyJWT = token => {
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) throw err;
+    });
+}
 
 class ServiceStaff {
+    /**
+     * @param {String} token Token JWT.
+     */
+    constructor (token) {
+        this.token = token;
+    }
     /**
      * Registra un empleado en la base de datos.
      * @param {Object} dataUser Datos del empleado.
@@ -21,6 +35,7 @@ class ServiceStaff {
      * @param {String} dataUser.staffType Tipo de empleado.
      */
     createStaff(dataUser) {
+        verifyJWT(this.token);
         if (dataUser.gender !== EnumGender.MALE && dataUser.gender !== EnumGender.FEMALE) {
             throw 'Invalid Gender';
         }
@@ -49,6 +64,7 @@ class ServiceStaff {
      * Obtiene una lista de todos los empleados en la base de datos.
      */
     getAllStaff() {
+        verifyJWT(this.token);
         return new RepositoryStaff().getAll();
     }
 
@@ -57,6 +73,7 @@ class ServiceStaff {
      * @param {String} idStaff ID del empleado.
      */
     getStaff(idStaff) {
+        verifyJWT(this.token);
         return new RepositoryStaff().getStaff(parseInt(idStaff, 10));
     }
 
@@ -65,6 +82,7 @@ class ServiceStaff {
      * @param {String} idStaff ID del empleado.
      */
     deleteStaff(idStaff) {
+        verifyJWT(this.token);
         return new RepositoryStaff().deleteStaff(parseInt(idStaff, 10));
     }
 
@@ -74,6 +92,7 @@ class ServiceStaff {
      * @param {Object} staff Datos del staff que se desea editar.
      */
     editStaff(idStaff, staff) {
+        verifyJWT(this.token);
         if (staff.gender !== undefined) {
             if (staff.gender !== EnumGender.MALE && staff.gender !== EnumGender.FEMALE) {
                 throw 'Invalid Gender';
