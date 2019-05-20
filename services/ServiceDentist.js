@@ -88,15 +88,15 @@ class ServiceDentist {
      */
     editDentist(idDentist, dentist) {
         verifyJWT(this.token);
-        if (dentist.gender !== undefined) {
+        if (dentist.gender) {
             if (dentist.gender !== EnumGender.MALE && dentist.gender !== EnumGender.FEMALE) {
                 throw 'Invalid Gender';
             }
         }
-        if (dentist.dob !== undefined) {
+        if (dentist.dob) {
             dentist.dob = new Date(dentist.dob);
         }
-        if (dentist.rate !== undefined) {
+        if (dentist.rate) {
             dentist.rate = parseInt(dentist.rate, 10);
         }
         return new RepositoryDentist().editDentist(parseInt(idDentist, 10), dentist);

@@ -130,17 +130,17 @@ class RepositoryDentist {
      */
     editDentist(idDentist, dentist) {
         let dataUser = {}, dataDentist = {};
-        if (dentist.password !== undefined) dataUser['PASSWORD'] = dentist.password;
-        if (dentist.firstName !== undefined) dataUser['FIRST_NAME'] = dentist.firstName;
-        if (dentist.lastName !== undefined) dataUser['LAST_NAME'] = dentist.lastName;
-        if (dentist.email !== undefined) dataUser['EMAIL'] = dentist.email;
-        if (dentist.dob !== undefined) dataUser['DATE_OF_BIRTH'] = dentist.dob;
-        if (dentist.phone !== undefined) dataUser['PHONE'] = dentist.phone;
-        if (dentist.address !== undefined) dataUser['ADDRESS'] = dentist.address;
-        if (dentist.gender !== undefined) dataUser['GENDER'] = dentist.gender;
-        if (dentist.rate !== undefined) dataDentist['RATE'] = dentist.rate;
-        if (dentist.cedula !== undefined) dataDentist['CEDULA'] = dentist.cedula;
-        if (dentist.speciality !== undefined) dataDentist['SPECIALITY'] = dentist.speciality;
+        if (dentist.password) dataUser['PASSWORD'] = dentist.password;
+        if (dentist.firstName) dataUser['FIRST_NAME'] = dentist.firstName;
+        if (dentist.lastName) dataUser['LAST_NAME'] = dentist.lastName;
+        if (dentist.email) dataUser['EMAIL'] = dentist.email;
+        if (dentist.dob) dataUser['DATE_OF_BIRTH'] = dentist.dob;
+        if (dentist.phone) dataUser['PHONE'] = dentist.phone;
+        if (dentist.address) dataUser['ADDRESS'] = dentist.address;
+        if (dentist.gender) dataUser['GENDER'] = dentist.gender;
+        if (dentist.rate) dataDentist['RATE'] = dentist.rate;
+        if (dentist.cedula) dataDentist['CEDULA'] = dentist.cedula;
+        if (dentist.speciality) dataDentist['SPECIALITY'] = dentist.speciality;
 
         if (Object.keys(dataUser).length > 0) {
             if (Object.keys(dataDentist).length > 0) {

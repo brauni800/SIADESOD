@@ -131,17 +131,17 @@ class RepositoryPatient {
      */
     editPatient(idPatient, patient) {
         let dataUser = {}, dataPatient = {};
-        if (patient.password !== undefined) dataUser['PASSWORD'] = patient.password;
-        if (patient.firstName !== undefined) dataUser['FIRST_NAME'] = patient.firstName;
-        if (patient.lastName !== undefined) dataUser['LAST_NAME'] = patient.lastName;
-        if (patient.email !== undefined) dataUser['EMAIL'] = patient.email;
-        if (patient.dob !== undefined) dataUser['DATE_OF_BIRTH'] = patient.dob;
-        if (patient.phone !== undefined) dataUser['PHONE'] = patient.phone;
-        if (patient.address !== undefined) dataUser['ADDRESS'] = patient.address;
-        if (patient.gender !== undefined) dataUser['GENDER'] = patient.gender;
-        if (patient.curp !== undefined) dataPatient['CURP'] = patient.curp;
-        if (patient.insurances !== undefined) dataPatient['INSURANCES'] = patient.insurances;
-        if (patient.allergies !== undefined) dataPatient['ALLERGIES'] = patient.allergies;
+        if (patient.password) dataUser['PASSWORD'] = patient.password;
+        if (patient.firstName) dataUser['FIRST_NAME'] = patient.firstName;
+        if (patient.lastName) dataUser['LAST_NAME'] = patient.lastName;
+        if (patient.email) dataUser['EMAIL'] = patient.email;
+        if (patient.dob) dataUser['DATE_OF_BIRTH'] = patient.dob;
+        if (patient.phone) dataUser['PHONE'] = patient.phone;
+        if (patient.address) dataUser['ADDRESS'] = patient.address;
+        if (patient.gender) dataUser['GENDER'] = patient.gender;
+        if (patient.curp) dataPatient['CURP'] = patient.curp;
+        if (patient.insurances) dataPatient['INSURANCES'] = patient.insurances;
+        if (patient.allergies) dataPatient['ALLERGIES'] = patient.allergies;
 
         if (Object.keys(dataUser).length > 0) {
             if (Object.keys(dataPatient).length > 0) {

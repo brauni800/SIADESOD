@@ -93,18 +93,18 @@ class ServiceStaff {
      */
     editStaff(idStaff, staff) {
         verifyJWT(this.token);
-        if (staff.gender !== undefined) {
+        if (staff.gender) {
             if (staff.gender !== EnumGender.MALE && staff.gender !== EnumGender.FEMALE) {
                 throw 'Invalid Gender';
             }
         }
-        if (staff.dob !== undefined) {
+        if (staff.dob) {
             staff.dob = new Date(staff.dob);
         }
-        if (staff.salary !== undefined) {
+        if (staff.salary) {
             staff.salary = parseInt(staff.salary, 10);
         }
-        if (staff.staffType !== undefined) {
+        if (staff.staffType) {
             if (staff.staffType !== EnumStaffType.ADMINISTRATIVE && staff.staffType !== EnumStaffType.INTENDANCE) {
                 throw 'Invalid Staff Type';
             }

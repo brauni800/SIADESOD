@@ -91,12 +91,12 @@ class ServicePatient {
      */
     editPatient(idPatient, patient) {
         verifyJWT(this.token);
-        if (patient.gender !== undefined) {
+        if (patient.gender) {
             if (patient.gender !== EnumGender.MALE && patient.gender !== EnumGender.FEMALE) {
                 throw 'Invalid Gender';
             }
         }
-        if (patient.dob !== undefined) {
+        if (patient.dob) {
             patient.dob = new Date(patient.dob);
         }
         return new RepositoryPatient().editPatient(parseInt(idPatient, 10), patient);

@@ -124,16 +124,16 @@ class RepositoryStaff {
      */
     editStaff(idStaff, staff) {
         let dataUser = {}, dataStaff = {};
-        if (staff.password !== undefined) dataUser['PASSWORD'] = staff.password;
-        if (staff.firstName !== undefined) dataUser['FIRST_NAME'] = staff.firstName;
-        if (staff.lastName !== undefined) dataUser['LAST_NAME'] = staff.lastName;
-        if (staff.email !== undefined) dataUser['EMAIL'] = staff.email;
-        if (staff.dob !== undefined) dataUser['DATE_OF_BIRTH'] = staff.dob;
-        if (staff.phone !== undefined) dataUser['PHONE'] = staff.phone;
-        if (staff.address !== undefined) dataUser['ADDRESS'] = staff.address;
-        if (staff.gender !== undefined) dataUser['GENDER'] = staff.gender;
-        if (staff.salary !== undefined) dataStaff['SALARY'] = staff.salary;
-        if (staff.staffType !== undefined) dataStaff['TYPE'] = staff.staffType;
+        if (staff.password) dataUser['PASSWORD'] = staff.password;
+        if (staff.firstName) dataUser['FIRST_NAME'] = staff.firstName;
+        if (staff.lastName) dataUser['LAST_NAME'] = staff.lastName;
+        if (staff.email) dataUser['EMAIL'] = staff.email;
+        if (staff.dob) dataUser['DATE_OF_BIRTH'] = staff.dob;
+        if (staff.phone) dataUser['PHONE'] = staff.phone;
+        if (staff.address) dataUser['ADDRESS'] = staff.address;
+        if (staff.gender) dataUser['GENDER'] = staff.gender;
+        if (staff.salary) dataStaff['SALARY'] = staff.salary;
+        if (staff.staffType) dataStaff['TYPE'] = staff.staffType;
 
         if (Object.keys(dataUser).length > 0) {
             if (Object.keys(dataStaff).length > 0) {
