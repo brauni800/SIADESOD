@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -7,6 +8,10 @@ const app = express();
 //middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors({
+    origin: '*',
+    credentials: true,
+}));
 
 app.get('/', (req, res) => {
     res.send('SIADESOD app');
